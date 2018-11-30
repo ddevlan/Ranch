@@ -26,39 +26,23 @@ public class MiningHandler implements Listener {
 
             if (block.getType() == Material.STONE) {
                 mdata.setStone(mdata.getStone() + 1);
-                return;
-            }
-
-            int found = oresNear(block.getLocation());
-
-            if (block.getType() == Material.DIAMOND_ORE) {
+            } else if (block.getType() == Material.GOLD_ORE) {
+                mdata.setGold(mdata.getGold() + 1);
+            } else if (block.getType() == Material.IRON_ORE) {
+                mdata.setIron(mdata.getIron() + 1);
+            } else if (block.getType() == Material.LAPIS_ORE) {
+                mdata.setLapis(mdata.getLapis() + 1);
+            } else if (block.getType() == Material.REDSTONE_ORE) {
+                mdata.setRedstone(mdata.getRedstone() + 1);
+            } else if (block.getType() == Material.COAL_ORE) {
+                mdata.setCoal(mdata.getCoal() + 1);
+            } else if (block.getType() == Material.NETHER_QUARTZ_ORE) {
+                mdata.setQuartz(mdata.getQuartz() + 1);
+            } else if (block.getType() == Material.DIAMOND_ORE) {
                 if (block.getMetadata("DIAMOND_FOUND").isEmpty()) {
+                    int found = diamondsNear(block.getLocation());
                     Bukkit.broadcastMessage("[FD] " + ChatColor.AQUA + event.getPlayer().getName() + " found " + found + " diamonds.");
                     mdata.setDiamonds(mdata.getDiamonds() + found);
-                }
-            } else if (block.getType() == Material.GOLD_ORE) {
-                if (block.getMetadata("GOLD_FOUND").isEmpty()) {
-                    mdata.setGold(mdata.getGold() + found);
-                }
-            } else if (block.getType() == Material.IRON_ORE) {
-                if (block.getMetadata("IRON_FOUND").isEmpty()) {
-                    mdata.setIron(mdata.getIron() + found);
-                }
-            } else if (block.getType() == Material.LAPIS_ORE) {
-                if (block.getMetadata("LAPIS_FOUND").isEmpty()) {
-                    mdata.setLapis(mdata.getLapis() + found);
-                }
-            } else if (block.getType() == Material.REDSTONE_ORE) {
-                if (block.getMetadata("REDSTONE_FOUND").isEmpty()) {
-                    mdata.setRedstone(mdata.getRedstone() + found);
-                }
-            } else if (block.getType() == Material.COAL_ORE) {
-                if (block.getMetadata("COAL_FOUND").isEmpty()) {
-                    mdata.setCoal(mdata.getCoal() + found);
-                }
-            } else if (block.getType() == Material.NETHER_QUARTZ_ORE) {
-                if (block.getMetadata("NETHER_FOUND").isEmpty()) {
-                    mdata.setQuartz(mdata.getQuartz() + found);
                 }
             }
         }
@@ -71,20 +55,19 @@ public class MiningHandler implements Listener {
         block.setMetadata("NOT_NATURALLY_GENERATED", new FixedMetadataValue(Ranch.getInstance(), "this block was not naturally generated"));
     }
 
-    private int oresNear(Location location) {
+    private int diamondsNear(Location location) {
         int amount = 0;
 
-        if (location.getBlock().getType().name().contains("_ORE")) {
-            String ore = location.getBlock().getType().name().split("_")[0];
+        if (location.getBlock().getType() == Material.DIAMOND_ORE) {
 
             for (int x = -3; x < 3; x++) {
                 for (int y = -3; y < 3; y++) {
                     for (int z = -3; z < 3; z++) {
                         Location location1 = location.clone().add(x, y, z);
                         if (location1.getBlock() != null) {
-                            if (location1.getBlock().getType().name().contains(ore)) {
+                            if (location1.getBlock().getType() == Material.DIAMOND_ORE) {
                                 Block block = location1.getBlock();
-                                block.setMetadata(ore + "_FOUND", new FixedMetadataValue(Ranch.getInstance(), "this ore has already been found"));
+                                block.setMetadata("DIAMOND_FOUND", new FixedMetadataValue(Ranch.getInstance(), "this ore has already been found"));
 
                                 amount++;
                             }
@@ -93,7 +76,6 @@ public class MiningHandler implements Listener {
                 }
             }
         }
-
         return amount;
     }
 

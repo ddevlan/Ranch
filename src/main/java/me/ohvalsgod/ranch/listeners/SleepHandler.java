@@ -1,7 +1,10 @@
 package me.ohvalsgod.ranch.listeners;
 
+import me.ohvalsgod.ranch.Ranch;
+import me.ohvalsgod.ranch.player.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,18 +25,22 @@ public class SleepHandler implements Listener {
 
     @EventHandler
     public void onEnterBed(PlayerBedEnterEvent event) {
-        if (Bukkit.getWorld("smol_pp").getTime() > 13000) {
+        World world = Bukkit.getWorld("smol_pp");
+        if (world.getTime() > 13000 || world.hasStorm()) {
             inbed.add(event.getPlayer().getName());
 
             if (inbed.size() >= neededToChangeDay()) {
                 Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "Time changed to" + ChatColor.WHITE + " day" + ChatColor.YELLOW + ".");
-                Bukkit.getServer().getWorld("smol_pp").setTime(0);
+                world.setTime(0);
+                world.setStorm(false);
                 event.setCancelled(true);
                 event.getPlayer().setBedSpawnLocation(event.getPlayer().getLocation());
 
                 for (String string : inbed) {
                     Player player = Bukkit.getPlayer(string);
                     player.setBedSpawnLocation(player.getLocation());
+                    PlayerData data = Ranch.getInstance().getDataFetcher().getDataFromUUID(player.getUniqueId());
+                    data.setLastSleep(System.currentTimeMillis());
                 }
             } else {
                 Bukkit.getServer().broadcastMessage(event.getPlayer().getName() + " " + ChatColor.YELLOW + "would like to sleep. " + ChatColor.WHITE + (neededToChangeDay() - inbed.size()) + ChatColor.YELLOW + " more player(s) needed.");
@@ -53,7 +60,7 @@ public class SleepHandler implements Listener {
     }
 
     private int neededToChangeDay() {
-        return (Bukkit.getOnlinePlayers().size() / 2);
+        return (Bukkit.getOnlinePlayers().size() / 3);
     }
 
 }

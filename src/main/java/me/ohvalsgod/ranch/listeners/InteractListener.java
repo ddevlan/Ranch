@@ -22,9 +22,7 @@ public class InteractListener implements Listener {
         if (player.isSneaking()) {
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 if (event.getClickedBlock().getType() == Material.CRAFTING_TABLE) {
-                    for (int i = 0; i < 2; i++) {
-                        player.sendMessage(" ");
-                    }
+                    player.sendMessage(" ");
                     player.sendMessage(ChatColor.DARK_GRAY + "*******" + ChatColor.GRAY +  " Mining Stats " + ChatColor.DARK_GRAY + "*******");
                     player.sendMessage(ChatColor.AQUA + "Diamonds" + ChatColor.WHITE + ": " + mdata.getDiamonds());
                     player.sendMessage(ChatColor.GOLD + "Gold" + ChatColor.WHITE + ": " + mdata.getGold());

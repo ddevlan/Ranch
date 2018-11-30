@@ -1,12 +1,9 @@
 package me.ohvalsgod.ranch;
 
 import lombok.Getter;
-import me.ohvalsgod.ranch.listeners.InteractListener;
+import me.ohvalsgod.ranch.listeners.*;
 import me.ohvalsgod.ranch.player.handler.PlayerDataFetcher;
 import me.ohvalsgod.ranch.player.handler.PlayerDataHandler;
-import me.ohvalsgod.ranch.listeners.MiningHandler;
-import me.ohvalsgod.ranch.listeners.LoginListener;
-import me.ohvalsgod.ranch.listeners.SleepHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Ranch extends JavaPlugin {
@@ -30,8 +27,9 @@ public class Ranch extends JavaPlugin {
         instance.getServer().getPluginManager().registerEvents(sleep, instance);
         instance.getServer().getPluginManager().registerEvents(login, instance);
         instance.getServer().getPluginManager().registerEvents(new LoginListener(), instance);
-        instance.getServer().getPluginManager().registerEvents(new MiningHandler(), instance);
         instance.getServer().getPluginManager().registerEvents(new InteractListener(), instance);
+        instance.getServer().getPluginManager().registerEvents(new MiningHandler(), instance);
+        instance.getServer().getPluginManager().registerEvents(new EntityHandler(), instance);
     }
 
     @Override

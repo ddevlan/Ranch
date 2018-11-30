@@ -11,8 +11,10 @@ import java.util.UUID;
 public class PlayerData {
 
     private UUID uuid;
-    private PlayerMiningData miningData;
     @Setter private boolean loaded;
+
+    private PlayerMiningData miningData;
+    @Setter private long lastSleep;
 
     public PlayerData(UUID uuid) {
         this.uuid = uuid;
